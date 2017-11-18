@@ -4,15 +4,19 @@ var _isUndefined = require('lodash/isUndefined');
 var expandPathExpression = require('./lib/expandPathExpression');
 
 function Sieve(paths) {
+  if (!(this instanceof Sieve)) {
+    return new Sieve(path);
+  }
   this._paths = paths || [];
 }
 
-Sieve.prototype.pass = function pass(path) {
+Sieve.prototype.add = function add(path) {
   this._paths.push(path);
+  return this;
 };
 
 Sieve.prototype.toJSON = function () {
-  return JSON.stringify(this._paths);
+  return this._paths;
 };
 
 Sieve.prototype.apply = function (obj) {
@@ -27,3 +31,5 @@ Sieve.prototype.apply = function (obj) {
   }
   return output;
 };
+
+module.exports = Sieve;

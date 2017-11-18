@@ -23,7 +23,9 @@
   "author": "Maurizio Lupo <maurizio.lupo@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "iter-tools": "^1.4.1",
+    "lodash": "^4.17.4",
+    "micromatch": "^3.1.4"
   },
   "devDependencies": {
     "chai": "^4.1.2",
