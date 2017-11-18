@@ -1,7 +1,9 @@
-var _get = require('lodash/get');
-var _set = require('lodash/set');
-var _isUndefined = require('lodash/isUndefined');
-var expandPathExpression = require('./lib/expandPathExpression');
+const _get = require('lodash/get');
+const _set = require('lodash/set');
+const _isUndefined = require('lodash/isUndefined');
+const _isArray = require('lodash/isArray');
+const compactArrays = require('./lib/compactArrays');
+const expandPathExpression = require('./lib/expandPathExpression');
 
 function Sieve(paths) {
   if (!(this instanceof Sieve)) {
@@ -10,7 +12,7 @@ function Sieve(paths) {
   this._paths = paths || [];
 }
 
-Sieve.prototype.add = function add(path) {
+Sieve.prototype.include = function include(path) {
   this._paths.push(path);
   return this;
 };
@@ -29,7 +31,17 @@ Sieve.prototype.apply = function (obj) {
       }
     }
   }
+  compactArrays(output);
   return output;
 };
+
+Sieve.filter = function filter(paths, obj) {
+  paths = _isArray(paths) ? paths : paths.split(',');
+  const sieve = new Sieve();
+  for (const path of paths) {
+    sieve.include(path);
+  }
+  return sieve.apply(obj);
+}
 
 module.exports = Sieve;
