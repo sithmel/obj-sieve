@@ -59,7 +59,7 @@ const filteredCharacters = sieve.apply(characters);
 ```
 filteredCharacter contains:
 ```js
-const characters = {
+const filteredCharacters = {
   heroes: [
     {
       title: 'mr',
@@ -99,6 +99,17 @@ For Example:
 * [:-1] of [1, 2, 3, 4] = [1, 2, 3] **to the one before the last**
 * [1:-1] of [1, 2, 3, 4] = [2, 3] **from the one with index one to the one before the last**
 * [-2:] of [1, 2, 3, 4] = [3, 4] **the last 2**
+
+exclude
+-------
+In case you need to filter out some of the content you are including, there is a method exclude.
+This method takes a path expression (just like the include method) and uses this to identify what part of the final object we need to remove.
+```js
+sieve.include('heroes');
+sieve.exclude('heroes[:][secretIdentity|base]');
+sieve.apply(characters);
+```
+This is importing the heroes array, and then removing "secretIdentity" and "base".
 
 Additional features
 -------------------

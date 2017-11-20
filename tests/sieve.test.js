@@ -9,19 +9,19 @@ describe('sieve', function () {
   it('adds a path', function () {
     const sieve = new Sieve();
     sieve.include('hello');
-    assert.deepEqual(sieve._paths, ['hello']);
+    assert.deepEqual(sieve._paths.include, ['hello']);
   });
 
   it('can be serialised', function () {
     const sieve = new Sieve();
     sieve.include('hello');
     sieve.include('world');
-    assert.equal(JSON.stringify(sieve), '["hello","world"]');
+    assert.equal(JSON.stringify(sieve), '{"include":["hello","world"],"exclude":[]}');
   });
 
   it('can be deserialised', function () {
-    const sieve = new Sieve(['hello', 'world']);
-    assert.deepEqual(sieve._paths, ['hello', 'world']);
+    const sieve = new Sieve({ include: ['hello', 'world'] });
+    assert.deepEqual(sieve._paths.include, ['hello', 'world']);
   });
 
   it('filters an object', function () {
@@ -107,6 +107,55 @@ describe('sieve', function () {
         },
         {
           title: 'princess',
+          name: 'Diana Prince',
+        }
+      ],
+    });
+  });
+
+  it('filters an object with a complex expression, using exclude', function () {
+    const sieve = new Sieve();
+    sieve.include('heroes[:][name|title]');
+    sieve.exclude('heroes[:][title]');
+    const newObj = sieve.apply({
+      heroes: [
+        {
+          title: 'mr',
+          name: 'Bruce Wayne',
+          secretIdentity: 'batman',
+          base: 'batcave',
+        },
+        {
+          title: 'mr',
+          name: 'Clarke Kent',
+          secretIdentity: 'superman',
+          base: 'fortress of solitude',
+        },
+        {
+          title: 'princess',
+          name: 'Diana Prince',
+          secretIdentity: 'wonder woman',
+          base: 'Themyscira',
+        }
+      ],
+      villains: [
+        {
+          title: 'mr',
+          name: 'Jack Napier',
+          secretIdentity: 'the joker',
+          base: 'Unknown',
+        }
+      ]
+    });
+    assert.deepEqual(newObj, {
+      heroes: [
+        {
+          name: 'Bruce Wayne',
+        },
+        {
+          name: 'Clarke Kent',
+        },
+        {
           name: 'Diana Prince',
         }
       ],
