@@ -161,4 +161,48 @@ describe('sieve', function () {
       ],
     });
   });
+  it('filters an object with a complex expression, using exclude, using filter expression', function () {
+    const sieve = new Sieve();
+    sieve.include('heroes[:][title=mr][name]');
+    const newObj = sieve.apply({
+      heroes: [
+        {
+          title: 'mr',
+          name: 'Bruce Wayne',
+          secretIdentity: 'batman',
+          base: 'batcave',
+        },
+        {
+          title: 'mr',
+          name: 'Clarke Kent',
+          secretIdentity: 'superman',
+          base: 'fortress of solitude',
+        },
+        {
+          title: 'princess',
+          name: 'Diana Prince',
+          secretIdentity: 'wonder woman',
+          base: 'Themyscira',
+        }
+      ],
+      villains: [
+        {
+          title: 'mr',
+          name: 'Jack Napier',
+          secretIdentity: 'the joker',
+          base: 'Unknown',
+        }
+      ]
+    });
+    assert.deepEqual(newObj, {
+      heroes: [
+        {
+          name: 'Bruce Wayne',
+        },
+        {
+          name: 'Clarke Kent',
+        },
+      ],
+    });
+  });
 });

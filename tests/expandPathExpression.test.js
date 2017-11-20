@@ -32,6 +32,11 @@ describe('expandPathExpression', function () {
     assert.deepEqual(paths, [['hello', 'a'], ['hello', 'b']]);
   });
 
+  it('uses wildchars on array', function () {
+    const paths = Array.from(expandPathExpression('hello[*]', { hello: [1, 2] }));
+    assert.deepEqual(paths, [['hello', 0], ['hello', 1]]);
+  });
+
   it('uses slices', function () {
     const paths = Array.from(expandPathExpression('hello[0:2]', { hello: [1, 2, 3, 4, 5] }));
     assert.deepEqual(paths, [['hello', 0], ['hello', 1]]);
@@ -55,5 +60,26 @@ describe('expandPathExpression', function () {
   it('uses slices, negative begin', function () {
     const paths = Array.from(expandPathExpression('hello[-2:]', { hello: [1, 2, 3, 4, 5] }));
     assert.deepEqual(paths, [['hello', 3], ['hello', 4]]);
+  });
+
+  describe('filter expression', function () {
+    it('uses filter expression', function () {
+      const paths = Array.from(expandPathExpression('guardians[*][alien=true]',
+        {
+          guardians: [
+            { name: 'Peter Quill', alien: false },
+            { name: 'Gamora', alien: true },
+            { name: 'Drax', alien: true },
+            { name: 'Groot', alien: true },
+            { name: 'Rocket Racoon', alien: true },
+          ],
+        }));
+      assert.deepEqual(paths, [
+        ['guardians', 1],
+        ['guardians', 2],
+        ['guardians', 3],
+        ['guardians', 4],
+      ]);
+    });
   });
 });
