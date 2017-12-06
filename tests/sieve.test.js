@@ -1,6 +1,8 @@
 /* eslint-env node, mocha */
-var assert = require('chai').assert
-var Sieve = require('..')
+const assert = require('chai').assert
+const Sieve = require('..')
+const _isPlainObject = require('lodash/isPlainObject')
+const _get = require('lodash/get')
 
 describe('sieve', function () {
   it('is an object', function () {
@@ -162,9 +164,64 @@ describe('sieve', function () {
       ]
     })
   })
-  it.skip('filters an object with a complex expression, using exclude, using filter expression', function () {
+
+  it('includes everything when there is no include', function () {
     const sieve = new Sieve()
-    sieve.include('heroes[:][title=mr][name]')
+    sieve.exclude('heroes[0:2],villains')
+    const newObj = sieve.apply({
+      heroes: [
+        {
+          title: 'mr',
+          name: 'Bruce Wayne',
+          secretIdentity: 'batman',
+          base: 'batcave'
+        },
+        {
+          title: 'mr',
+          name: 'Clarke Kent',
+          secretIdentity: 'superman',
+          base: 'fortress of solitude'
+        },
+        {
+          title: 'princess',
+          name: 'Diana Prince',
+          secretIdentity: 'wonder woman',
+          base: 'Themyscira'
+        }
+      ],
+      villains: [
+        {
+          title: 'mr',
+          name: 'Jack Napier',
+          secretIdentity: 'the joker',
+          base: 'Unknown'
+        }
+      ]
+    })
+    assert.deepEqual(newObj, {
+      heroes: [
+        {
+          title: 'princess',
+          name: 'Diana Prince',
+          secretIdentity: 'wonder woman',
+          base: 'Themyscira'
+        }
+      ]
+    })
+  })
+
+  it('filters an object with a complex expression, using exclude, using filter expression', function () {
+    const sieve = new Sieve()
+    sieve.setCustomFunctions({
+      '=': (path, funcArgument, parent) => {
+        const [fieldName, value] = funcArgument.split(',')
+        if (_isPlainObject(parent) && _get(parent, fieldName).toString() === value) {
+          return [path]
+        }
+        return []
+      }
+    })
+    sieve.include('heroes[:]{= title,mr}[name]')
     const newObj = sieve.apply({
       heroes: [
         {
