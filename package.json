@@ -21,7 +21,7 @@
     "iter-tools": "^1.4.1",
     "lodash": "^4.17.4",
     "micromatch": "^3.1.4",
-    "obj-delta": "0.0.2",
+    "obj-delta": "0.0.3",
     "obj-path-expression-parser": "0.0.2"
   },
   "devDependencies": {
