@@ -117,7 +117,7 @@ You can notice that you can use a dot or square brackets to separate the fragmen
 Here's what you can do with globbing:
 * xyz: it matches only the attribute "xyz"
 * xyz|abc: it matches both "xyz" and "abc"
-* * : it matches all attributes
+* `*` : it matches all attributes
 * !abc: it matches everything except abc
 * test?: it matches "test1", "test2", "test3". It doesn't match "test" or "test10"
 * test*: it matches "test1", "test2", "test3", "test" and "test10"
