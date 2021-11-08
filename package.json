@@ -17,9 +17,8 @@
   "dependencies": {
     "iter-tools": "^1.4.1",
     "lodash": "^4.17.11",
-    "micromatch": "^4.0.4",
     "obj-delta": "0.0.3",
-    "obj-path-expression-parser": "0.0.2"
+    "obj-path-expression-parser": "github:tes/obj-path-expression-parser"
   },
   "devDependencies": {
     "chai": "^4.1.2",
