@@ -1,3 +1,5 @@
+Note: this repo and obj-sieve are now deprecated and no longer maintained. Please consider using json-key-value instead
+
 obj-sieve
 =========
 Skim an object of unnecessary data.
